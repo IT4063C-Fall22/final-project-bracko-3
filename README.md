@@ -1,4 +1,4 @@
-# Final-Project-Template
+# Brayden Cummins - Climate Change Final Project
 <!-- Edit the title above with your project title -->
 
 ## Installing Dependencies
