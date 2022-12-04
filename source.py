@@ -32,7 +32,7 @@
 # Importing Data into Python:
 # •	I imported my datasets in python, and I uploaded it all to the GitHub repository I submitted.
 
-# In[651]:
+# In[152]:
 
 
 # Importing first dataset from kaggle using opendatasets. The CO2_GHG_emissions-data.
@@ -43,40 +43,40 @@ dataset_url = 'https://www.kaggle.com/datasets/yoannboyere/co2-ghg-emissionsdata
 od.download(dataset_url, data_dir='./data')
 
 
-# In[652]:
+# In[153]:
 
 
 ghg = pd.read_csv('data/co2-ghg-emissionsdata/co2_emission.csv')
 ghg.head(5)
 
 
-# In[653]:
+# In[154]:
 
 
 dataset_url = 'https://www.kaggle.com/datasets/alejopaullier/-gdp-by-country-1999-2022'
 od.download(dataset_url, data_dir='./data')
 
 
-# In[654]:
+# In[155]:
 
 
 gdp = pd.read_csv('data/-gdp-by-country-1999-2022/GDP by Country 1999-2022.csv')
 gdp.head()
 
 
-# In[655]:
+# In[156]:
 
 
 gdp.describe()
 
 
-# In[656]:
+# In[157]:
 
 
 ghg.describe()
 
 
-# In[657]:
+# In[158]:
 
 
 import requests
@@ -93,7 +93,7 @@ global_pop.describe()
 
 # # Cleaning my datasets - Checkpoint 2 Data Cleaning
 
-# In[658]:
+# In[159]:
 
 
 ##I am working on finding out which year has the best data in my datasets. So I'm trying to find out what year has the least amount of 0's and Nulls. First, I need to clean up the datasets and columns
@@ -104,7 +104,7 @@ gdp_2021['2021'] = gdp_2021['2021'].astype(float)
 gdp_2021.describe()
 
 
-# In[659]:
+# In[160]:
 
 
 #So I can see here that out of the 180 countries in this dataset, there are 15 countries with 0 GDP.
@@ -112,7 +112,7 @@ gdp_2021.describe()
 gdp_2021[gdp_2021['2021'] == 0]
 
 
-# In[660]:
+# In[161]:
 
 
 #As you can see, 2014 has only 1 country with 0's for the GDP, so I'm going to use 2014 for my calculations. 
@@ -123,7 +123,7 @@ gdp_2014['2014'] = gdp_2014['2014'].astype(float)
 gdp_2014[gdp_2014['2014'] == 0]
 
 
-# In[661]:
+# In[162]:
 
 
 #Cleaning up this dataframe
@@ -131,13 +131,13 @@ gdp_2014.columns = ('Country', 'GDP (In US Billions)')
 gdp_2014.head(15)
 
 
-# In[662]:
+# In[163]:
 
 
 ghg.info()
 
 
-# In[663]:
+# In[164]:
 
 
 #I figured out that this dataset had continents in it as well, so I dropped the rows that didn't have a country code. Now I will check for more nulls. 
@@ -147,34 +147,34 @@ ghg_2014 = ghg_2014_1.dropna()
 len(ghg_2014)
 
 
-# In[664]:
+# In[165]:
 
 
 ghg_2014.head(5)
 
 
-# In[665]:
+# In[166]:
 
 
 #We have no nulls, that's great!
 ghg_2014.isnull().sum()
 
 
-# In[666]:
+# In[167]:
 
 
 #Same with this dataset, no nulls. We already checked for 0's in this one, so we sould be good. 
 gdp_2014.isnull().sum()
 
 
-# In[667]:
+# In[168]:
 
 
 #Checking for zeros for the green house gas emissions. 
 ghg_2014[ghg_2014['Annual CO₂ emissions (tonnes )'] == 0].count()
 
 
-# In[668]:
+# In[169]:
 
 
 #I added this later on, but I need to divide the emissions values to a lower value to graph. So thats what I do here.
@@ -183,7 +183,7 @@ ghg_2014['Annual CO₂ emissions (tonnes )'] = ghg_2014['Annual CO₂ emissions 
 ghg_2014.head()
 
 
-# In[669]:
+# In[170]:
 
 
 #Now, I need to work on the last dataset. The first two I have got rid of the nulls, zeros, not needed rows, and changed all the datatypes so they can be used.
@@ -191,20 +191,20 @@ ghg_2014.head()
 # I will fact check some numbers to make sure they are correct. 
 
 
-# In[670]:
+# In[171]:
 
 
 global_pop.head(15)
 
 
-# In[671]:
+# In[172]:
 
 
 #This dataset is looking good, no nulls except for the E0 column, so i'll drop the columns that i'm not going to use. 
 global_pop.isnull().sum()
 
 
-# In[672]:
+# In[173]:
 
 
 #Now I have the columns that I want
@@ -212,13 +212,13 @@ global_pop.drop(global_pop.columns[[2,3,4,7]], axis=1, inplace=True)
 global_pop.head()
 
 
-# In[673]:
+# In[174]:
 
 
 gdp_2014.info()
 
 
-# In[674]:
+# In[175]:
 
 
 ghg_2014.columns = ('Country', 'Code', 'Year', 'Annual Emissions (Tonnes X 1000)')
@@ -228,7 +228,7 @@ global_pop.columns = ('Country', 'Population', 'Area (KM)', 'GENC')
 # # Now that I have clean code, I'm going to try and join them based on their name.
 # ## I can already see I'm going to have to do some manipulating of the names, because not all of them are the same. 
 
-# In[675]:
+# In[176]:
 
 
 data_check = ghg_2014.merge(global_pop, how='outer', on=['Country'])
@@ -236,21 +236,21 @@ data_check2 = global_pop.merge(ghg_2014, how='outer', on=['Country'])
 len(data_check)
 
 
-# In[676]:
+# In[177]:
 
 
 #trying to figure out why I have nulls, its probably because of the country names not matching up
 data_check[data_check['Population'].isnull()]
 
 
-# In[677]:
+# In[178]:
 
 
 test = global_pop[global_pop['Country'].str.startswith('K')]
 test
 
 
-# In[678]:
+# In[179]:
 
 
 global_pop.at[28, 'Country'] = 'Bahamas'
@@ -274,14 +274,14 @@ global_pop.at[179, 'Country'] = 'Saint Helena'
 global_pop.at[82, 'Country'] = 'French Guiana'
 
 
-# In[679]:
+# In[180]:
 
 
 data_check = ghg_2014.merge(global_pop, how='outer', on=['Country'])
 data_check[data_check['Population'].isnull()]
 
 
-# In[680]:
+# In[181]:
 
 
 ## What I did above was match up the names, All the names didnt match. So I went through the global_pop dataframe and replaced the values that didnt match with the matching names. I used its index to replace 
@@ -290,7 +290,7 @@ data_check[data_check['Population'].isnull()]
 #I started out with around 20 something values that didnt match and I ended with 8, I couldnt find matches for the ones that are left.
 
 
-# In[681]:
+# In[182]:
 
 
 ##This is the inner join, so we should only get values that match. 
@@ -298,7 +298,7 @@ final_data_1 = ghg_2014.merge(global_pop, how='inner', on=['Country'])
 len(final_data_1)
 
 
-# In[682]:
+# In[183]:
 
 
 final_data = final_data_1.merge(gdp_2014, how='outer', on=['Country'])
@@ -306,14 +306,14 @@ final_data = final_data_1.merge(gdp_2014, how='outer', on=['Country'])
 final_data[final_data['Population'].isnull()]
 
 
-# In[683]:
+# In[184]:
 
 
 test2 = gdp_2014[gdp_2014['Country'].str.startswith('Timor')]
 test2
 
 
-# In[684]:
+# In[185]:
 
 
 gdp_2014.at[177, 'Country'] = 'Yemen'
@@ -339,14 +339,14 @@ gdp_2014.at[156, 'Country'] = 'Taiwan'
 gdp_2014.at[160, 'Country'] = 'Timor'
 
 
-# In[685]:
+# In[186]:
 
 
 final_data = final_data_1.merge(gdp_2014, how='outer', on=['Country'])
 final_data[final_data['Population'].isnull()]
 
 
-# In[686]:
+# In[187]:
 
 
 ##I did the same thing with the names when I joined the 3rd dataset. I got it down to a few missing countries. Now time for the inner join. Ater the inner I should have my main dataset ready. 
@@ -354,7 +354,7 @@ test3 = final_data_1[final_data_1['Country'].str.startswith('United')]
 test3
 
 
-# In[687]:
+# In[188]:
 
 
 #No Nulls in the final data, now that I have the data clean. I want to show it in some visualizations.
@@ -363,7 +363,7 @@ final_data = final_data_1.merge(gdp_2014, how='inner', on=['Country'])
 final_data.isnull().sum()
 
 
-# In[688]:
+# In[189]:
 
 
 final_data['Population'] = final_data['Population'].astype(int)
@@ -371,7 +371,7 @@ final_data['Population'] = final_data['Population'].astype(int)
 
 # # Data Visualization - Showing the seperate datasets, then the final.
 
-# In[689]:
+# In[190]:
 
 
 #First going to show the ghg_2014 dataset, this will show the ghg by country for the year 2014. 
@@ -382,20 +382,20 @@ plt.scatter(ghg_2014['Country'], ghg_2014['Annual Emissions (Tonnes X 1000)'])
 plt.show()
 
 
-# In[690]:
+# In[191]:
 
 
 test4 = final_data[final_data['Country'].str.startswith('China')]
 test4
 
 
-# In[691]:
+# In[192]:
 
 
 plt.scatter(gdp_2014['Country'], gdp_2014['GDP (In US Billions)'])
 
 
-# In[692]:
+# In[193]:
 
 
 ## As you can see from graphing these first few datasets. We have A LOT of smaller countries with smaller GDP and smaller emissions that are making the graphs look very weird.
@@ -404,7 +404,7 @@ plt.scatter(gdp_2014['Country'], gdp_2014['GDP (In US Billions)'])
 ## Also, there is a world value in the GHG dataset, so the final dataset should be better for that. 
 
 
-# In[693]:
+# In[194]:
 
 
 #Trying to get the top 5 couuntires
@@ -412,33 +412,53 @@ import seaborn as sns
 sns.scatterplot(x = ghg_2014['Country'], y = ghg_2014['Annual Emissions (Tonnes X 1000)'], data = ghg_2014.sort_values('Annual Emissions (Tonnes X 1000)').tail(5))
 
 
-# In[694]:
+# In[195]:
 
 
 print(ghg_2014.sort_values('Annual Emissions (Tonnes X 1000)').tail(5))
 
 
-# In[700]:
+# In[196]:
 
 
 #This is showing the top 5 countries with the largest GHG emissions. 
 sns.scatterplot(data=final_data.sort_values('Annual Emissions (Tonnes X 1000)').tail(5), x='Country', y='Annual Emissions (Tonnes X 1000)', hue='Annual Emissions (Tonnes X 1000)')
 
 
-# In[701]:
+# In[197]:
 
 
 #This shows the population
 sns.scatterplot(data=final_data.sort_values('Population').tail(5), x='Country', y='Population')
 
 
-# In[702]:
+# In[198]:
 
 
 sns.scatterplot(data=final_data.sort_values('GDP (In US Billions)').tail(5), x='Country', y='GDP (In US Billions)')
 
 
-# In[703]:
+# In[199]:
+
+
+final_data['Area (KM)'] = final_data['Area (KM)'].astype('int')
+
+
+# In[200]:
+
+
+final_data = final_data.drop('GENC', axis=1)
+final_data = final_data.drop('Code', axis=1)
+final_data = final_data.drop('Year', axis=1)
+
+
+# In[201]:
+
+
+final_data.info()
+
+
+# In[202]:
 
 
 # As you can see from the three graphs above using Seaborn. I want to use the data from population, GDP, and each countires emissions to see if there is a correlation between any of them.
@@ -450,7 +470,7 @@ sns.scatterplot(data=final_data.sort_values('GDP (In US Billions)').tail(5), x='
 # ## I want to make some new columns that have like population divided by GHG, or even bring in the area of the country and do GHG divided by area to see if there is a correlation there. 
 # ## I want to see if any of these factors increase or descrease emissions, and I want to be able to show them. 
 
-# In[ ]:
+# In[203]:
 
 
 ## Im going to go through the EDA questions to try and answer them since I have a better understaind of my data now. 
@@ -474,7 +494,7 @@ sns.scatterplot(data=final_data.sort_values('GDP (In US Billions)').tail(5), x='
 
 # # Machine learing Plan
 
-# In[ ]:
+# In[204]:
 
 
 ## I want to be able to have a algorithm where it can try and predict GHG emissions based on population, GDP, and Area of the country. I think that all of these have a correlation to GHG emissions and I think
@@ -485,7 +505,147 @@ sns.scatterplot(data=final_data.sort_values('GDP (In US Billions)').tail(5), x='
 ## The issues will probably have to do with the big numbers, so I will have to clean the data some more to make python happy. 
 
 
-# In[705]:
+# # Machine Learning
+
+# In[205]:
+
+
+# First I want to see if there is any correlation between the columns, also start with showing a histogram of the data. 
+final_data.hist(bins = 50, figsize = (20,15))
+
+
+# In[206]:
+
+
+pd.plotting.scatter_matrix(final_data)
+
+
+# In[207]:
+
+
+## This shows that there is a pretty good correlation between Emissions and population, and Emmisions and GDP. But no so much for the area of the country
+corr = final_data.corr()
+sns.heatmap(corr, annot = True, cmap = 'coolwarm')
+
+
+# In[208]:
+
+
+## I'm going to drop the area column because it does not correlate very well, and I think that it will affect the outcome of the model.
+## I think GDP and Population will do just fine.
+
+final_data = final_data.drop('Area (KM)', axis=1)
+
+
+# In[209]:
+
+
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+## For preprocessing
+from sklearn.preprocessing import (
+  OneHotEncoder,
+  OrdinalEncoder,
+  StandardScaler
+)
+from sklearn.impute import (
+  SimpleImputer
+)
+## For model selection
+from sklearn.model_selection import (
+  StratifiedShuffleSplit,
+  train_test_split,
+  cross_val_score,
+  KFold,
+  GridSearchCV
+)
+
+
+# In[210]:
+
+
+train_set, test_set = train_test_split(final_data, test_size = 0.2, random_state = 32)
+
+
+# In[211]:
+
+
+train_set.info()
+
+
+# In[212]:
+
+
+data_X = train_set.drop('Annual Emissions (Tonnes X 1000)', axis=1)
+data_Y = train_set['Annual Emissions (Tonnes X 1000)']
+display(data_X.head())
+display(data_Y.head())
+
+
+# In[213]:
+
+
+data_X_num = data_X.drop('Country', axis=1)
+data_X_cat = data_X['Country']
+
+
+# In[214]:
+
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OrdinalEncoder
+
+data_X_num_scaled = StandardScaler().fit_transform(data_X_num)
+data_X_num_scaled = pd.DataFrame(data_X_num_scaled, columns = data_X_num.columns, index = data_X_num.index)
+
+data_X_num_scaled.head(10)
+
+
+# In[216]:
+
+
+## Since I only have country as my only categorical column and I dont need to do anything to it, i'm not going to use a pipeline since I already scaled my data.
+
+data_X_num_scaled[:5]
+
+
+# In[217]:
+
+
+from sklearn.linear_model import LinearRegression
+
+GHG_lin_reg = LinearRegression()
+GHG_lin_reg.fit(data_X_num_scaled, data_Y)
+
+
+# In[218]:
+
+
+## Well, as you can see I'm not sure if I did everything correctly, but were going to keep trying. 
+import numpy as np
+from sklearn.metrics import mean_squared_error
+predictions = GHG_lin_reg.predict(data_X_num_scaled)
+lin_mse = mean_squared_error(data_Y, predictions)
+lin_mse = np.sqrt(lin_mse)
+lin_mse
+
+
+# In[225]:
+
+
+data_X.info()
+
+
+# In[222]:
+
+
+plt.scatter(data_X, data_Y, color="black")
+plt.plot(data_X, GHG_lin_reg.predict(data_X), color="blue", linewidth=3)
+
+plt.show()
+
+
+# In[215]:
 
 
 #This never works for me, I have to use the terminal
